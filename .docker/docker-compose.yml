@@ -32,7 +32,7 @@ services:
 
   phpmyadmin:
     container_name: ${APP_NAME}_phpmyadmin
-    image: mysql:8.0
+    image: phpmyadmin/phpmyadmin
     restart: always
     depends_on:
       - emariadb
