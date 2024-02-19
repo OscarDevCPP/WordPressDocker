@@ -1,0 +1,48 @@
+version: '3.1'
+
+services:
+
+  wordpress:
+    container_name: ${APP_NAME}_wordpress
+    build:
+      context: wordpress
+    restart: always
+    ports:
+      - 8080:80
+    environment:
+      WORDPRESS_DB_HOST: emariadb
+      WORDPRESS_DB_USER: ${DB_USER}
+      WORDPRESS_DB_PASSWORD: ${DB_PASSWORD}
+      WORDPRESS_DB_NAME: ${DB_DATABASE} 
+    volumes:
+      - ${APP_PATH}/config:/var/www/html
+
+  emariadb:
+    container_name: ${APP_NAME}_db
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USER} 
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_RANDOM_ROOT_PASSWORD: '1'
+    volumes:
+      - db:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    restart: always
+    depends_on:
+      - emariadb
+    ports:
+      -  8081:80
+    environment:
+      PMA_HOST: emariadb
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+
+volumes:
+  wordpress:
+    name: ${APP_NAME}_wordpress
+  db:
+    name: ${APP_NAME}_db
