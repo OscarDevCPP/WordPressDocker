@@ -9,8 +9,10 @@ services:
       args:
         UID: $U_ID
     restart: always
+    depends_on:
+      - emariadb
     ports:
-      - 8080:80
+      - 80:80
     user: $U_ID:$U_ID
     environment:
       WORDPRESS_DB_HOST: emariadb
