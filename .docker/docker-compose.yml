@@ -3,7 +3,7 @@ version: '3.5'
 services:
 
   wordpress:
-    container_name: ${APP_NAME}_wordpress
+    container_name: ${APP_NAME}-server
     build:
       context: wordpress
       args:
@@ -12,7 +12,7 @@ services:
     depends_on:
       - emariadb
     ports:
-      - 80:80
+      - 8080:8080
     user: $U_ID:$U_ID
     environment:
       WORDPRESS_DB_HOST: emariadb
@@ -25,7 +25,7 @@ services:
       - default
 
   emariadb:
-    container_name: ${APP_NAME}_db
+    container_name: ${APP_NAME}-database
     image: mysql:8.0
     restart: always
     environment:
@@ -40,7 +40,7 @@ services:
       - default
 
   phpmyadmin:
-    container_name: ${APP_NAME}_phpmyadmin
+    container_name: ${APP_NAME}-phpmyadmin
     image: phpmyadmin/phpmyadmin
     restart: always
     depends_on:
@@ -55,5 +55,5 @@ services:
 
 networks:
   default:
-    name: unamba-network
+    name: ${APP_NAME}-network
     external:  true
