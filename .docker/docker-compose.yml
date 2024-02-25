@@ -1,4 +1,4 @@
-version: '3.1'
+version: '3.5'
 
 services:
 
@@ -6,9 +6,12 @@ services:
     container_name: ${APP_NAME}_wordpress
     build:
       context: wordpress
+      args:
+        UID: $U_ID
     restart: always
     ports:
       - 8080:80
+    user: 1000:1000
     environment:
       WORDPRESS_DB_HOST: emariadb
       WORDPRESS_DB_USER: ${DB_USER}
@@ -16,6 +19,8 @@ services:
       WORDPRESS_DB_NAME: ${DB_DATABASE} 
     volumes:
       - ${APP_PATH}/config:/var/www/html
+    networks:
+      - default
 
   emariadb:
     container_name: ${APP_NAME}_db
@@ -29,6 +34,8 @@ services:
       MYSQL_RANDOM_ROOT_PASSWORD: '1'
     volumes:
       - db:/var/lib/mysql
+    networks:
+      - default
 
   phpmyadmin:
     container_name: ${APP_NAME}_phpmyadmin
@@ -41,9 +48,16 @@ services:
     environment:
       PMA_HOST: emariadb
       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+    networks:
+      - default
 
 volumes:
   wordpress:
     name: ${APP_NAME}_wordpress
   db:
     name: ${APP_NAME}_db
+
+networks:
+  default:
+    name: unamba-network
+    external:  true
