@@ -1,4 +1,4 @@
-FROM wordpress:latest
+FROM wordpress:6.4.3-apache
 
 ARG UID
 
