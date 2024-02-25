@@ -11,7 +11,7 @@ services:
     restart: always
     ports:
       - 8080:80
-    user: 1000:1000
+    user: $U_ID:$U_ID
     environment:
       WORDPRESS_DB_HOST: emariadb
       WORDPRESS_DB_USER: ${DB_USER}
@@ -33,7 +33,7 @@ services:
       MYSQL_PASSWORD: ${DB_PASSWORD}
       MYSQL_RANDOM_ROOT_PASSWORD: '1'
     volumes:
-      - db:/var/lib/mysql
+      - ${APP_PATH}/database:/var/lib/mysql
     networks:
       - default
 
@@ -50,12 +50,6 @@ services:
       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
     networks:
       - default
-
-volumes:
-  wordpress:
-    name: ${APP_NAME}_wordpress
-  db:
-    name: ${APP_NAME}_db
 
 networks:
   default:
