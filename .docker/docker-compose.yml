@@ -8,7 +8,7 @@ services:
       context: wordpress
       args:
         UID: $U_ID
-        PORT: ${WORDPRESS_PORT}
+        WORDPRESS_PORT: ${WORDPRESS_PORT}
     restart: always
     depends_on:
       - emariadb
